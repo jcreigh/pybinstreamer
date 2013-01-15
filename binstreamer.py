@@ -78,7 +78,7 @@ class BinaryStream():
         elif byteOrder in ["BE", ">", BE]:
             order_fmt = ">"
         if fmt[0] == "s" and length is None:
-            length = self.read("uint" + str(8 * int(fmt[1:])))
+            length = self.read("uint" + str(8 * int(fmt[1:])), byteOrder)
             fmt = str(length) + fmt
         return unpack_from(order_fmt + fmt, self.stream.read(length))[0]
 
@@ -90,7 +90,7 @@ class BinaryStream():
         elif byteOrder in ["BE", ">", BE]:
             order_fmt = ">"
         if fmt[0] == "s":
-            self.write(len(data), "uint" + str(8 * int(fmt[1:])))
+            self.write(len(data), "uint" + str(8 * int(fmt[1:])), byteOrder)
             self.stream.write(data)
         else:
             self.stream.write(pack(order_fmt + fmt, data))
