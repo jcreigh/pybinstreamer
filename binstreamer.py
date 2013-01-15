@@ -1,5 +1,5 @@
 from struct import pack, unpack_from
-#from StringIO import StringIO
+from functools import partial
 from ctypes import *
 
 LE = 1
@@ -9,6 +9,12 @@ class BinaryStream():
     def __init__(self, stream, byteOrder=None):
         self.stream = stream
         self.byteOrder = byteOrder
+
+    def __getattr__(self, name):
+        if name[:4] == "read":
+            return partial(self.read, name[4:].lower())
+        if name[:5] == "write":
+            return lambda data, byteOrder=None: self.write(data, name[5:].lower(), byteOrder)
 
     def _parsefmt(self, t):
         if t in ["float", float, c_float]:
