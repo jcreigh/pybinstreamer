@@ -15,6 +15,10 @@ class BinaryStream():
             return partial(self.read, name[4:].lower())
         if name[:5] == "write":
             return lambda data, byteOrder=None: self.write(data, name[5:].lower(), byteOrder)
+        raise AttributeError("BinaryStream instance has no attribute '%s'" % name)
+
+    def __len__(self):
+        return self.stream.len
 
     def _parsefmt(self, t):
         if t in ["float", float, c_float]:
