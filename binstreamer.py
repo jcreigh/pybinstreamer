@@ -1,12 +1,17 @@
-from struct import pack, unpack_from
-from functools import partial
 from ctypes import *
+from functools import partial
+from StringIO import StringIO
+from struct import pack, unpack_from
 
 LE = 1
 BE = 2
 
 class BinaryStream():
-    def __init__(self, stream, byteOrder=None):
+    def __init__(self, stream=None, byteOrder=None):
+        if stream is None:
+            stream = StringIO()
+        if type(stream) in [str, unicode]:
+            stream = StringIO(stream)
         self.stream = stream
         self.byteOrder = byteOrder
 
