@@ -79,6 +79,11 @@ class BinaryStream():
     def pos(self):
         return self.stream.pos
 
+    def rewind(self, n):
+        new_pos = self.tell() - n
+        if new_pos >= 0 and n >= 1:
+            self.seek(new_pos)
+
     def _unpack(self, fmt, length, byteOrder=None):
         byteOrder = byteOrder or self.byteOrder
         order_fmt = ""
